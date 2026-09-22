@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head('Bảng quản trị')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <div class="panel">
+        <div class="page-title">
+            <h2>Bảng điều khiển quản trị (Admin Dashboard)</h2>
+            <span style="background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 4px; font-weight: 600;">
+                Yêu cầu quyền ROLE_ADMIN
+            </span>
+        </div>
+
+        <p style="color: #64748b; margin-top: 10px;">
+            Trang này chỉ hiển thị khi tài khoản có quyền <code>ROLE_ADMIN</code> theo cấu hình trong <code>SecurityConfig</code>.
+        </p>
+
+        <div class="table-wrap" style="margin-top: 20px;">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Họ và tên</th>
+                    <th>Vai trò</th>
+                    <th>Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}">1</td>
+                    <td th:text="${user.email}">admin@hcmute.edu.vn</td>
+                    <td th:text="${user.fullName}">Nguyễn Hữu Trung</td>
+                    <td>
+                        <span style="background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-size: 12px;"
+                              th:text="${user.roleName}">ROLE_ADMIN</span>
+                    </td>
+                    <td>
+                        <span th:if="${user.enabled}" style="color: #16a34a; font-weight: 600;">Hoạt động</span>
+                        <span th:unless="${user.enabled}" style="color: #dc2626; font-weight: 600;">Bị khóa</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a th:href="@{/}" class="btn secondary">Quay lại Trang chủ</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 IOTSTAR SHOP - Admin Area</p>
+</footer>
+</body>
+</html>

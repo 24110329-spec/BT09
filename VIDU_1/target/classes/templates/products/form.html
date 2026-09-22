@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head(${isEdit} ? 'Sửa sản phẩm' : 'Thêm sản phẩm')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <div class="panel" style="max-width: 640px; margin: 30px auto;">
+        <div class="page-title">
+            <h2 th:text="${isEdit} ? '✏️ Cập nhật Sản phẩm' : '➕ Thêm Sản phẩm mới'">Form sản phẩm</h2>
+        </div>
+
+        <form th:action="${isEdit} ? @{/products/edit/{id}(id=${productDTO.id})} : @{/products/add}"
+              th:object="${productDTO}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <div class="form-group">
+                <label>Tên sản phẩm <span style="color:red;">*</span></label>
+                <input type="text" th:field="*{name}" placeholder="Nhập tên sản phẩm">
+                <div style="color:#dc2626; font-size:13px; margin-top:4px;"
+                     th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Lỗi</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Thương hiệu</label>
+                    <input type="text" th:field="*{brand}" placeholder="vd: Samsung, Apple...">
+                </div>
+                <div class="form-group">
+                    <label>Xuất xứ (Made in)</label>
+                    <input type="text" th:field="*{madein}" placeholder="vd: Vietnam, USA...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Giá bán (VNĐ) <span style="color:red;">*</span></label>
+                <input type="number" th:field="*{price}" min="0" step="1000" placeholder="vd: 500000">
+                <div style="color:#dc2626; font-size:13px; margin-top:4px;"
+                     th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Lỗi</div>
+            </div>
+
+            <div class="form-group">
+                <label>Người quản lý <span style="color:red;">*</span></label>
+                <!-- ADMIN chọn được; USER thường chỉ thấy của mình -->
+                <select th:field="*{userId}" sec:authorize="hasRole('ADMIN')">
+                    <option value="" disabled>-- Chọn người quản lý --</option>
+                    <option th:each="u : ${users}"
+                            th:value="${u.id}"
+                            th:text="${u.fullName + ' (' + u.email + ')'}">User</option>
+                </select>
+                <input type="hidden" th:field="*{userId}" sec:authorize="!hasRole('ADMIN')">
+                <div style="color:#dc2626; font-size:13px; margin-top:4px;"
+                     th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">Lỗi</div>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button class="btn primary" type="submit"
+                        th:text="${isEdit} ? '💾 Lưu thay đổi' : '➕ Thêm mới'">Lưu</button>
+                <a th:href="@{/products}" class="btn secondary">Huỷ</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 IOTSTAR SHOP</p>
+</footer>
+</body>
+</html>
