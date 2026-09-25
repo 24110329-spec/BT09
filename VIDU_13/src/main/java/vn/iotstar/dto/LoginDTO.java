@@ -1,0 +1,1 @@
+package vn.iotstar.dto; import jakarta.validation.constraints.NotBlank; import lombok.*; @Data public class LoginDTO{ @NotBlank private String username; @NotBlank private String password; }

@@ -1,0 +1,1 @@
+package vn.iotstar.dto; import jakarta.validation.constraints.*; import lombok.*; @Data public class ForgotPasswordDTO{ @NotBlank @Email private String email; }

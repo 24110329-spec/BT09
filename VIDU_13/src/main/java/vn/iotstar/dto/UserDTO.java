@@ -1,0 +1,1 @@
+package vn.iotstar.dto; import jakarta.validation.constraints.*; import lombok.*; @Data public class UserDTO{ private Long id; @NotBlank private String username; @NotBlank @Email private String email; @NotBlank private String fullName; private boolean enabled; private String roleName; private long productCount; }
