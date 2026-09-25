@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head('Trang chủ')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container">
+    <div class="panel">
+        <div class="page-title">
+            <h2>Chào mừng đến với IOTSTAR SHOP</h2>
+            <span class="badge" style="background:#e0e7ff; color:#3730a3; padding:6px 12px; border-radius:20px; font-weight:600;">
+                Spring Boot + Spring Security
+            </span>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 4px;">
+            <h3>Xin chào, <span sec:authentication="name" style="color: #166534;">User</span>!</h3>
+            <p>Bạn đang đăng nhập với quyền: <strong sec:authentication="principal.authorities">ROLE_USER</strong></p>
+            <p>Hệ thống đã lưu thông tin người dùng an toàn vào Spring Security Context.</p>
+        </div>
+
+        <div sec:authorize="!isAuthenticated()" style="margin-top: 20px; padding: 15px; background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 4px;">
+            <h3>Bạn chưa đăng nhập</h3>
+            <p>Vui lòng đăng nhập để sử dụng đầy đủ các chức năng của hệ thống.</p>
+            <a th:href="@{/login}" class="btn primary">Đăng nhập ngay</a>
+        </div>
+
+        <div style="margin-top: 30px;" class="cards">
+            <div class="card">
+                <b>Người dùng</b>
+                <strong th:text="${totalUsers != null ? totalUsers : 0}">2</strong>
+                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">Tài khoản trong CSDL</p>
+            </div>
+            <div class="card">
+                <b>Sản phẩm</b>
+                <strong th:text="${totalProducts != null ? totalProducts : 0}">0</strong>
+                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">Sản phẩm đang quản lý</p>
+            </div>
+            <div class="card">
+                <b>Bảo mật</b>
+                <strong style="font-size: 20px; color: #16a34a;">Spring Security</strong>
+                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">BCrypt + FilterChain</p>
+            </div>
+            <div class="card">
+                <b>Ánh xạ DTO</b>
+                <strong style="font-size: 20px; color: #7c3aed;">MapStruct</strong>
+                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">Entity &lt;-&gt; DTO</p>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div sec:authorize="isAuthenticated()" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <a th:href="@{/products}" class="btn primary">📦 Xem Sản phẩm</a>
+            <a th:href="@{/users}" sec:authorize="hasRole('ADMIN')" class="btn secondary">👥 Quản lý Người dùng</a>
+            <a th:href="@{/dashboard}" sec:authorize="hasRole('ADMIN')" class="btn secondary">🛡️ Dashboard</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 IOTSTAR SHOP - Bài tập Lập trình Web</p>
+</footer>
+</body>
+</html>
